@@ -15,12 +15,12 @@ var _ MiferGenerator = (*DefaultMiferGenerator)(nil)
 type PrepareDataCallBack func() RandomData
 
 type MiferGenerator interface {
-	Do(ctx context.Context, targetClmName string, numData int64, fn PrepareDataCallBack) ([]RandomData, error)
+	Do(ctx context.Context, numData int64, fn PrepareDataCallBack) ([]RandomData, error)
 }
 
 type DefaultMiferGenerator struct{}
 
-func (dmg *DefaultMiferGenerator) Do(ctx context.Context, targetClmName string, numData int64, fn PrepareDataCallBack) ([]RandomData, error) {
+func (dmg *DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn PrepareDataCallBack) ([]RandomData, error) {
 	datum := make([]RandomData, 0, numData)
 	var i int64
 	for i = 0; i < numData; i++ {
