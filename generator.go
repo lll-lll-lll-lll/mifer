@@ -2,6 +2,8 @@ package mifer
 
 import (
 	"context"
+
+	"github.com/brianvoe/gofakeit/v6"
 )
 
 type RandomData interface{}
@@ -9,6 +11,7 @@ type RandomData interface{}
 var _ MiferGenerator = (*DefaultMiferGenerator)(nil)
 
 // return generate random type data
+// the data generated can be customized.
 type PrepareDataCallBack func() RandomData
 
 type MiferGenerator interface {
@@ -27,7 +30,9 @@ func (dmg *DefaultMiferGenerator) Do(ctx context.Context, targetClmName string, 
 	return datum, nil
 }
 
-func DefaultStrPrepareDataCallBack() RandomData   { return "default" }
-func DefaultIntPrepareDataCallBack() RandomData   { return 0 }
-func DefaultEmailPrepareDataCallBack() RandomData { return "default" }
-func DefaultUUIDPrepareDataCallBack() RandomData  { return "default" }
+func DefaultUserNamePrepareDataCallBack() RandomData   { return gofakeit.Username() }
+func DefaultInt64PrepareDataCallBack() RandomData      { return gofakeit.Int64() }
+func DefaultEmailPrepareDataCallBack() RandomData      { return gofakeit.Email() }
+func DefaultUUIDPrepareDataCallBack() RandomData       { return gofakeit.UUID() }
+func DefaultDATEStringPrepareDataCallBack() RandomData { return gofakeit.Date().String() }
+func DefaultLanguagePrepareDataCallBack() RandomData   { return gofakeit.Language() }

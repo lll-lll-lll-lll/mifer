@@ -2,6 +2,7 @@ package mifer_test
 
 import (
 	"context"
+	"fmt"
 	"strings"
 	"testing"
 
@@ -33,11 +34,12 @@ func Test_Build(t *testing.T) {
 		DBName:    "testDB",
 		TableName: "users",
 	}
+	randomID := mifer.DefaultInt64PrepareDataCallBack()
+	randaomName := mifer.DefaultUserNamePrepareDataCallBack()
 	clmns := mifer.Columns{"id": mifer.Column{ColumnType: "int"}, "name": mifer.Column{ColumnType: "nvarchar"}}
 	queries := psql.BuildQueries(context.Background(), 10, clmns,
-		mifer.MiferOption{"id", []mifer.RandomData{mifer.DefaultIntPrepareDataCallBack()}},
-		mifer.MiferOption{"name", []mifer.RandomData{mifer.DefaultStrPrepareDataCallBack()}})
-	want := []string{"INSERT INTO users (id, name) VALUES (0, 'default');"}
-	t.Log(queries[0])
+		mifer.MiferOption{"id", []mifer.RandomData{randomID}},
+		mifer.MiferOption{"name", []mifer.RandomData{randaomName}})
+	want := []string{fmt.Sprintf("INSERT INTO users (id, name) VALUES (%d, '%s');", randomID, randaomName)}
 	assert.Equal(t, queries[0], want[0])
 }
