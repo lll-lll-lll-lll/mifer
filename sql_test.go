@@ -31,7 +31,7 @@ func Test_ReadMigrations(t *testing.T) {
 	wantFiles := []string{"create_update_users.sql", "create_users.sql"}
 	wantDirPath := []string{"./testdata/migrations/create_update_users.sql", "./testdata/migrations/create_users.sql"}
 	dirPath := "./testdata/migrations/"
-	migrations, err := mifer.ReadMigrations(dirPath)
+	migrations, err := mifer.ReadSQLs(dirPath)
 	if err != nil {
 		t.Error(err)
 	}
@@ -45,7 +45,7 @@ func Test_ReadMigrations(t *testing.T) {
 func Test_MigrationFileRead(t *testing.T) {
 	t.Parallel()
 	filePath := "./testdata/migrations/create_users.sql"
-	mf := &mifer.MigrationFile{
+	mf := &mifer.SQLFile{
 		FilePath: filePath,
 	}
 	if err := mf.Read(); err != nil {

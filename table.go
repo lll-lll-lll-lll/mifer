@@ -57,7 +57,7 @@ func (psql *PostreSQL) Columns() (Columns, error) {
 	return psql.ColumnsInfo, nil
 }
 
-// TODO: dbからテーブル情報を取得し、構造体に落とし込む
+// TODO: from db, get table information and inject into struct
 func (psql *PostreSQL) Scan(db *sql.DB) error {
 	return nil
 }
@@ -84,6 +84,7 @@ func (psql *PostreSQL) BuildQueries(ctx context.Context, queriesNum int, columns
 	}
 	return queries
 }
+
 func queryHolder(columnType string) string {
 	switch columnType {
 	case "character":

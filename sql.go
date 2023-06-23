@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-type MigrationFile struct {
+type SQLFile struct {
 	Content       []byte
 	IsContentRead bool
 	FilePath      string
@@ -14,7 +14,7 @@ type MigrationFile struct {
 }
 
 // Read read file content
-func (mf *MigrationFile) Read() error {
+func (mf *SQLFile) Read() error {
 	if mf.IsContentRead {
 		return nil
 	}
@@ -27,17 +27,17 @@ func (mf *MigrationFile) Read() error {
 	return nil
 }
 
-func ReadMigrations(dirPath string) ([]*MigrationFile, error) {
+func ReadSQLs(dirPath string) ([]*SQLFile, error) {
 	sqls, err := extractFiles(dirPath)
 	if err != nil {
 		return nil, err
 	}
-	migrations := make([]*MigrationFile, 0, len(sqls))
+	migrations := make([]*SQLFile, 0, len(sqls))
 	for _, sqlFile := range sqls {
 		if ext := filepath.Ext(sqlFile); ext != ".sql" {
 			continue
 		}
-		migrations = append(migrations, &MigrationFile{Name: sqlFile, FilePath: fmt.Sprintf("%s%s", dirPath, sqlFile)})
+		migrations = append(migrations, &SQLFile{Name: sqlFile, FilePath: fmt.Sprintf("%s%s", dirPath, sqlFile)})
 	}
 	return migrations, nil
 }

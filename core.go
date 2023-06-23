@@ -14,10 +14,10 @@ type MiferOption struct {
 	Datum     []RandomData
 }
 
-func (m *Mifer) ExecMigration(ctx context.Context, migration []*MigrationFile) error {
+func (m *Mifer) ExecMigration(ctx context.Context, migration []*SQLFile) error {
 	return nil
 }
 
-func (m *Mifer) Inject(ctx context.Context) error {
+func (m *Mifer) Inject(ctx context.Context, datum []RandomData) error {
 	return nil
 }
