@@ -3,13 +3,12 @@ package mifer
 type ErrType string
 
 const (
-	MigrationErr ErrType = "migration error"
-	SqlErr               = "sql error"
-	DBErr                = "database error"
-	InjectErr            = "inject error"
-	MapKeyErr            = "map key error"
-	NillErr              = "nill error"
-	GenErr               = "random data generation error"
+	SqlErr    = "sql error"
+	DBErr     = "database error"
+	InjectErr = "inject error"
+	MapKeyErr = "map key error"
+	NillErr   = "nill error"
+	GenErr    = "random data generation error"
 )
 
 type MiferError struct {

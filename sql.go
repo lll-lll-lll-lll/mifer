@@ -14,32 +14,32 @@ type SQLFile struct {
 }
 
 // Read read file content
-func (mf *SQLFile) Read() error {
-	if mf.IsContentRead {
+func (sf *SQLFile) Read() error {
+	if sf.IsContentRead {
 		return nil
 	}
-	content, err := os.ReadFile(mf.FilePath)
+	content, err := os.ReadFile(sf.FilePath)
 	if err != nil {
 		return fmt.Errorf("%w", err)
 	}
-	mf.Content = content
-	mf.IsContentRead = true
+	sf.Content = content
+	sf.IsContentRead = true
 	return nil
 }
 
 func ReadSQLs(dirPath string) ([]*SQLFile, error) {
-	sqls, err := extractFiles(dirPath)
+	files, err := extractFiles(dirPath)
 	if err != nil {
 		return nil, err
 	}
-	migrations := make([]*SQLFile, 0, len(sqls))
-	for _, sqlFile := range sqls {
+	sqls := make([]*SQLFile, 0, len(files))
+	for _, sqlFile := range files {
 		if ext := filepath.Ext(sqlFile); ext != ".sql" {
 			continue
 		}
-		migrations = append(migrations, &SQLFile{Name: sqlFile, FilePath: fmt.Sprintf("%s%s", dirPath, sqlFile)})
+		sqls = append(sqls, &SQLFile{Name: sqlFile, FilePath: fmt.Sprintf("%s%s", dirPath, sqlFile)})
 	}
-	return migrations, nil
+	return sqls, nil
 }
 
 func extractFiles(dirPath string) ([]string, error) {
@@ -55,7 +55,7 @@ func extractFiles(dirPath string) ([]string, error) {
 		fileNames = append(fileNames, f.Name())
 	}
 	if len(fileNames) == 0 {
-		return nil, fmt.Errorf("%w", Error(MigrationErr, "no file included"))
+		return nil, fmt.Errorf("%w", Error(SqlErr, "no file included"))
 	}
 	return fileNames, nil
 }
