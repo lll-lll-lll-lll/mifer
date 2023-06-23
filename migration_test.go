@@ -28,8 +28,8 @@ func Test_extractFiles(t *testing.T) {
 
 func Test_ReadMigrations(t *testing.T) {
 	t.Parallel()
-	wantFiles := []string{"create_users.sql", "update_users.sql"}
-	wantDirPath := []string{"./testdata/migrations/create_users.sql", "./testdata/migrations/update_users.sql"}
+	wantFiles := []string{"create_update_users.sql", "create_users.sql"}
+	wantDirPath := []string{"./testdata/migrations/create_update_users.sql", "./testdata/migrations/create_users.sql"}
 	dirPath := "./testdata/migrations/"
 	migrations, err := mifer.ReadMigrations(dirPath)
 	if err != nil {
