@@ -6,8 +6,7 @@ import (
 )
 
 type Mifer struct {
-	db        *sql.DB
-	generator MiferGenerator
+	db *sql.DB
 }
 
 type MiferOption struct {
