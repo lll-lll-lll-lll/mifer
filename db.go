@@ -12,16 +12,14 @@ const (
 	QUERYPERIOD = ", "
 )
 
-var _ Table = (*PostreSQL)(nil)
+var _ MiferDB = (*PostreSQL)(nil)
 
 // key is the name of the column
 type Columns = map[string]Column
 
-type Table interface {
-	// column names in the table
-	Columns() (Columns, error)
+type MiferDB interface {
 	// from database, extract table information and inject into Columns struct
-	Scan(db *sql.DB) error
+	Scan(ctx context.Context, db *sql.DB, tableName string) (*Column, error)
 	// create insert query
 	BuildQueries(ctx context.Context, queriesNum int, columns Columns, options ...MiferOption) []string
 }
@@ -36,12 +34,12 @@ type Column struct {
 
 // PostreSQL represent a table in a database
 type PostreSQL struct {
-	DBName      string
-	TableName   string
-	ColumnsInfo Columns
+	DBName    string
+	TableName string
+	Info      PostreSQLInfo
 }
 
-func NewTable(dbName string) Table {
+func NewTable(dbName string) MiferDB {
 	switch dbName {
 	case "psql":
 		return &PostreSQL{}
@@ -50,19 +48,31 @@ func NewTable(dbName string) Table {
 	}
 }
 
-func (psql *PostreSQL) Columns() (Columns, error) {
-	if psql.ColumnsInfo == nil {
-		return nil, Error(DBErr, "No column information. calling 'Scan' method first")
-	}
-	return psql.ColumnsInfo, nil
+type PostreSQLInfo struct {
+	ColumnName      string `json:"column_name"`
+	DateType        string `json:"data_type"`
+	OrdinalPosition string `json:"ordinal_position"`
+	IsNullable      string `json:"is_nullable"`
 }
 
 // TODO: from db, get table information and inject into struct
-func (psql *PostreSQL) Scan(db *sql.DB) error {
-	return nil
+func (psql *PostreSQL) Scan(ctx context.Context, db *sql.DB, tableName string) (*Column, error) {
+	var psti PostreSQLInfo
+	if err := db.QueryRowContext(ctx, `
+		SELECT column_name,data_type, ordinal_position, is_nullable 
+		FROM information_schema.columns
+		WHERE table_name = ?
+		ORDER BY ordinal_position
+		`, tableName).Scan(&psti.ColumnName, &psti.DateType, &psti.OrdinalPosition, &psti.IsNullable); err != nil {
+		return nil, Error(DBErr, fmt.Sprintf("failed to prepare table information. check table_name. table_name is %s", tableName))
+	}
+	return nil, nil
 }
 
 func (psql *PostreSQL) BuildQueries(ctx context.Context, queriesNum int, columns Columns, options ...MiferOption) []string {
+	if len(options) == 0 {
+		return nil
+	}
 	queries := make([]string, queriesNum)
 	clms := joinOptions(options)
 	clmsNum := len(options)
@@ -109,8 +119,4 @@ func joinOptions(options []MiferOption) string {
 	}
 	clms := strings.Join(tmp, ", ")
 	return clms
-}
-
-func ReadRandomDataQuery(filePath string) string {
-	return ""
 }
