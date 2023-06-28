@@ -27,7 +27,7 @@ func (me *MiferError) Unwrap() error {
 	return me.err
 }
 
-func Error(errType ErrType, msg string) *MiferError {
+func NewErr(errType ErrType, msg string) *MiferError {
 	return &MiferError{
 		Msg:     msg,
 		ErrType: errType,
