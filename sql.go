@@ -55,7 +55,7 @@ func extractFiles(dirPath string) ([]string, error) {
 		fileNames = append(fileNames, f.Name())
 	}
 	if len(fileNames) == 0 {
-		return nil, fmt.Errorf("%w", Error(SqlErr, "no file included"))
+		return nil, NewErr(SqlErr, "no file included")
 	}
 	return fileNames, nil
 }
