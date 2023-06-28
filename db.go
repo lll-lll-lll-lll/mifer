@@ -106,7 +106,7 @@ func (psql *PostreSQL) Scan(ctx context.Context, db *sql.DB, tableName string) (
 
 func (psql *PostreSQL) BuildQueries(ctx context.Context, maxDataNum int, columns Columns, options ...MiferOption) ([]string, error) {
 	if len(options) == 0 {
-		return nil, Error(NoOptionsErr, "Not a option was provided. At least one option must be provided")
+		return nil, NewErr(NoOptionsErr, "Not a option was provided. At least one option must be provided")
 	}
 	queries := make([]string, maxDataNum)
 	columnNames := joinColumnWithComma(options)
@@ -115,7 +115,7 @@ func (psql *PostreSQL) BuildQueries(ctx context.Context, maxDataNum int, columns
 	for j := 0; j < columnNum; j++ {
 		columnDataNum := len(options[j].Datum)
 		if isGrater := isGraterThanColumnDataNum(maxDataNum, columnDataNum); !isGrater {
-			return nil, Error(NoTypeErr, fmt.Sprintf("maxDatumNum must be greater than RandomDataNum of option. maxDatumNum is %d. columnDataNum is %d. column name is %v", maxDataNum, columnDataNum, options[j].ColumnKey))
+			return nil, NewErr(NoTypeErr, fmt.Sprintf("maxDatumNum must be greater than RandomDataNum of option. maxDatumNum is %d. columnDataNum is %d. column name is %v", maxDataNum, columnDataNum, options[j].ColumnKey))
 		}
 		dataFormat := switchFormatByColumnType(columns[options[j].ColumnKey].ColumnType)
 
