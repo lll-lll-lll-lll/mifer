@@ -87,10 +87,21 @@ func Test_Build(t *testing.T) {
 		assert.Equal(t, queries[0], want)
 	})
 
-	t.Run("failed: no options", func(t *testing.T) {
+	t.Run(" no options error", func(t *testing.T) {
 		t.Parallel()
 		column := mifer.Columns{"id": mifer.Column{ColumnType: "int"}}
 		_, err := psql.BuildQueries(context.Background(), 10, column)
-		assert.Error(t, err, "no options error Not a option was provided. At least one option must be passed as an argument")
+		e, ok := err.(*mifer.MiferError)
+		if !ok {
+			t.Errorf("expected *mifer.MiferError, got %T", err)
+		}
+		wantT := mifer.NoOptionsErr
+		if e.ErrType != mifer.NoOptionsErr {
+			t.Errorf("expected error type %q, got %q", wantT, e.ErrType)
+		}
+		wantMsg := "Not a option was provided. At least one option must be provided"
+		if e.Msg != wantMsg {
+			t.Errorf("expected error message %q, got %q", wantMsg, e.Msg)
+		}
 	})
 }
