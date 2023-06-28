@@ -21,8 +21,8 @@ func Test_Join(t *testing.T) {
 func Text_JoinOptions(t *testing.T) {
 	t.Parallel()
 	ipt := []mifer.MiferOption{
-		{ColumnKey: "id", Datum: []mifer.RandomData{[]int{1, 2}}},
-		{ColumnKey: "name", Datum: []mifer.RandomData{[]string{"test1", "test2"}}}}
+		{ColumnKey: "id", Datum: []interface{}{[]int{1, 2}}},
+		{ColumnKey: "name", Datum: []interface{}{[]string{"test1", "test2"}}}}
 	want := "id, name"
 	got := mifer.JoinOptions(ipt)
 	assert.Equal(t, got, want)
@@ -40,8 +40,8 @@ func Test_Build(t *testing.T) {
 		randaomName := mifer.DefaultUserNamePrepareDataCallBack()
 		clmns := mifer.Columns{"id": mifer.Column{ColumnType: "int"}, "name": mifer.Column{ColumnType: "nvarchar"}}
 		queries, err := psql.BuildQueries(context.Background(), 10, clmns,
-			mifer.MiferOption{"id", []mifer.RandomData{randomID}},
-			mifer.MiferOption{"name", []mifer.RandomData{randaomName}})
+			mifer.MiferOption{"id", []interface{}{randomID}},
+			mifer.MiferOption{"name", []interface{}{randaomName}})
 		if err != nil {
 			t.Log(err)
 		}
@@ -59,8 +59,8 @@ func Test_Build(t *testing.T) {
 		randaomName3 := mifer.DefaultUserNamePrepareDataCallBack()
 		clmns := mifer.Columns{"id": mifer.Column{ColumnType: "int"}, "name": mifer.Column{ColumnType: "nvarchar"}}
 		queries, err := psql.BuildQueries(context.Background(), 10, clmns,
-			mifer.MiferOption{"id", []mifer.RandomData{randomID, randomID2, randomID3}},
-			mifer.MiferOption{"name", []mifer.RandomData{randaomName, randaomName2, randaomName3}})
+			mifer.MiferOption{"id", []interface{}{randomID, randomID2, randomID3}},
+			mifer.MiferOption{"name", []interface{}{randaomName, randaomName2, randaomName3}})
 		if err != nil {
 			t.Log(err)
 		}
@@ -79,7 +79,7 @@ func Test_Build(t *testing.T) {
 		randomID := mifer.DefaultInt64PrepareDataCallBack()
 		column := mifer.Columns{"id": mifer.Column{ColumnType: "int"}}
 		queries, err := psql.BuildQueries(context.Background(), 10, column,
-			mifer.MiferOption{"id", []mifer.RandomData{randomID}})
+			mifer.MiferOption{"id", []interface{}{randomID}})
 		if err != nil {
 			t.Log(err)
 		}

@@ -11,13 +11,13 @@ type Mifer struct {
 
 type MiferOption struct {
 	ColumnKey string
-	Datum     []RandomData
+	Datum     []interface{}
 }
 
 func (m *Mifer) ExecMigration(ctx context.Context, migration []*SQLFile) error {
 	return nil
 }
 
-func (m *Mifer) Inject(ctx context.Context, datum []RandomData) error {
+func (m *Mifer) Inject(ctx context.Context) error {
 	return nil
 }

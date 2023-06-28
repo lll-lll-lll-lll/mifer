@@ -12,7 +12,7 @@ func Test_Do(t *testing.T) {
 	t.Parallel()
 	gen := &mifer.DefaultMiferGenerator{}
 	wantNum := 100
-	data, err := gen.Do(context.Background(), int64(wantNum), func() mifer.RandomData { return mifer.DefaultInt64PrepareDataCallBack() })
+	data, err := gen.Do(context.Background(), int64(wantNum), func() interface{} { return mifer.DefaultInt64PrepareDataCallBack() })
 	if err != nil {
 		t.Error(err)
 	}

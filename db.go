@@ -115,7 +115,7 @@ func (psql *PostreSQL) BuildQueries(ctx context.Context, maxDataNum int, columns
 	for j := 0; j < columnNum; j++ {
 		columnDataNum := len(options[j].Datum)
 		if isGrater := isGraterThanColumnDataNum(maxDataNum, columnDataNum); !isGrater {
-			return nil, Error(NoTypeErr, fmt.Sprintf("maxDatumNum must be greater than RandomDataNum of option. maxDatumNum is %d. column name is %v", maxDataNum, options[j].ColumnKey))
+			return nil, Error(NoTypeErr, fmt.Sprintf("maxDatumNum must be greater than RandomDataNum of option. maxDatumNum is %d. columnDataNum is %d. column name is %v", maxDataNum, columnDataNum, options[j].ColumnKey))
 		}
 		dataFormat := switchFormatByColumnType(columns[options[j].ColumnKey].ColumnType)
 
