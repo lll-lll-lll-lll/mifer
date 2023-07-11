@@ -39,15 +39,6 @@ type PostreSQL struct {
 	Info      PostreSQLInfo
 }
 
-func NewTable(dbName string) MiferDB {
-	switch dbName {
-	case "psql":
-		return &PostreSQL{}
-	default:
-		return nil
-	}
-}
-
 type PostreSQLInfo struct {
 	TableName      string `json:"table_name"`
 	ColumnName     string `json:"column_name"`
