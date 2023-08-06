@@ -17,15 +17,15 @@ const (
 	WHERE table_name = '%s';`
 )
 
-// PostreSQL represent a table in a database
-type PostreSQL struct {
+// PostresBuilder represent a table in a database
+type PostresBuilder struct {
 	DBName    string
 	TableName string
 	columns   *Columns
 }
 
 // Scan from database, extract table information and mapping scanned data into `Columns` type
-func (psql *PostreSQL) Scan(ctx context.Context, db *sql.DB, tableName string) (Columns, error) {
+func (psql *PostresBuilder) Scan(ctx context.Context, db *sql.DB, tableName string) (Columns, error) {
 	clms := Columns{}
 	rows, err := db.QueryContext(ctx, fmt.Sprintf(ScanQuery, tableName))
 	if err != nil {
@@ -48,7 +48,7 @@ func (psql *PostreSQL) Scan(ctx context.Context, db *sql.DB, tableName string) (
 
 // BuildQueries create insert queries. from options information.
 // return error if options's num is zero.
-func (psql *PostreSQL) BuildQueries(ctx context.Context, columns Columns, options ...MiferOption) ([]string, error) {
+func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, options ...MiferOption) ([]string, error) {
 	if len(options) == 0 {
 		return nil, NewErr(NoOptionsErr, "Not a option was provided. At least one option must be provided")
 	}

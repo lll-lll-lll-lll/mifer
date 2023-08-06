@@ -11,7 +11,7 @@ import (
 
 func Test_Build(t *testing.T) {
 	t.Parallel()
-	psql := &mifer.PostreSQL{
+	psql := &mifer.PostresBuilder{
 		DBName:    "testDB",
 		TableName: "users",
 	}
