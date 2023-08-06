@@ -23,13 +23,15 @@ func main(){
 	}
 	randomData := mifer.DefaultMiferGenerator{}.Do(100, mifer.DefaultUUIDPrepareDataCallBack)
 	idOpt := mifer.MiferOption{ColumnKey: "id", Datum: randomData}
-	queries, err := builder.BuildQueries(ctx, clmns, "users", idOpt)
+	nameOpt := mifer.MiferOption{ColumnKey: "name", Datum: mifer.DefaultMiferGenerator{}.Do(100, mifer.DefaultStringPrepareDataCallBack)}
+	queries, err := builder.BuildQueries(ctx, clmns, "users", idOpt, nameOpt)
 	if err != nil {
 		log.Fatal(err)
 	}
 	if err := mifer.Inject(ctx, db, queries); err != nil {
 		log.Fatal(err)
 	}
+
 
 }
 
