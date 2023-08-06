@@ -6,6 +6,10 @@ mifer is a package which generate an 'INSERT' QUERY by the random data from a ta
 
 # Usage
 
+```sh
+go get github.com/lll-lll-lll-lll/mifer
+```
+
 ```go
 func main(){
 	connStr := "postgres://mygo-postgres:mygo-postgres@localhost/mygo-postgresdb?sslmode=disable"
