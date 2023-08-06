@@ -7,6 +7,11 @@ import (
 	"strings"
 )
 
+const (
+	QUERYEND    = ");"
+	QUERYPERIOD = ", "
+)
+
 // PostreSQL represent a table in a database
 type PostreSQL struct {
 	DBName    string

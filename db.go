@@ -5,11 +5,6 @@ import (
 	"database/sql"
 )
 
-const (
-	QUERYEND    = ");"
-	QUERYPERIOD = ", "
-)
-
 type MiferBuilder interface {
 	// from database, extract table information and mapping scanned data into `Columns` type
 	Scan(ctx context.Context, db *sql.DB, tableName string) (*Column, error)
