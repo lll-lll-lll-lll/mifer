@@ -1,8 +1,6 @@
 package mifer
 
 import (
-	"context"
-
 	"github.com/brianvoe/gofakeit/v6"
 )
 
@@ -12,7 +10,7 @@ type PrepareDataCallBack func() interface{}
 
 type DefaultMiferGenerator struct{}
 
-func (dmg DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn PrepareDataCallBack) []interface{} {
+func (dmg DefaultMiferGenerator) Do(numData int64, fn PrepareDataCallBack) []interface{} {
 	datum := make([]interface{}, 0, numData)
 	var i int64
 	for i = 0; i < numData; i++ {

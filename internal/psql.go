@@ -10,7 +10,7 @@ import (
 
 func injectToOption(ctx context.Context, option *mifer.MiferOption, numData int64, fn mifer.PrepareDataCallBack) error {
 	defaultGen := mifer.DefaultMiferGenerator{}
-	datum := defaultGen.Do(ctx, numData, fn)
+	datum := defaultGen.Do(numData, fn)
 	option.Datum = datum
 	return nil
 }
