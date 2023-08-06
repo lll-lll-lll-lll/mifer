@@ -1,5 +1,4 @@
 package mifer
 
 var ExtractFiles = extractFiles
-
-var JoinOptions = joinColumnWithComma
+var JoinClmnKeys = joinClmnKeys

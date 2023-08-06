@@ -9,15 +9,22 @@ type Mifer struct {
 	db *sql.DB
 }
 
-type MiferOption struct {
-	ColumnKey string
-	Datum     []interface{}
-}
+func (m *Mifer) Inject(ctx context.Context, queries []string) error {
+	tx, err := m.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
 
-func (m *Mifer) ExecMigration(ctx context.Context, migration []*SQLFile) error {
-	return nil
-}
+	defer tx.Rollback()
 
-func (m *Mifer) Inject(ctx context.Context) error {
+	for _, query := range queries {
+		if _, err := tx.ExecContext(ctx, query); err != nil {
+			return err
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
 	return nil
 }

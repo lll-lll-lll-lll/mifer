@@ -9,7 +9,7 @@ import (
 
 func Test_extractFiles_NoFile(t *testing.T) {
 	t.Parallel()
-	dirPath := "./testdata"
+	dirPath := "./testdata/migrations"
 	if _, err := mifer.ExtractFiles(dirPath); err != nil {
 		assert.Equal(t, err.Error(), "migration error no file included")
 	}

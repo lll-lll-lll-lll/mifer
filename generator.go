@@ -6,15 +6,9 @@ import (
 	"github.com/brianvoe/gofakeit/v6"
 )
 
-var _ MiferGenerator = (*DefaultMiferGenerator)(nil)
-
 // return generate random type data
 // the data generated can be customized.
 type PrepareDataCallBack func() interface{}
-
-type MiferGenerator interface {
-	Do(ctx context.Context, numData int64, fn PrepareDataCallBack) ([]interface{}, error)
-}
 
 type DefaultMiferGenerator struct{}
 
@@ -29,6 +23,7 @@ func (dmg *DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn Prep
 }
 
 func DefaultUserNamePrepareDataCallBack() interface{}   { return gofakeit.Username() }
+func DefaultStringPrepareDataCallBack() interface{}     { return gofakeit.Letter() }
 func DefaultInt64PrepareDataCallBack() interface{}      { return gofakeit.Int64() }
 func DefaultEmailPrepareDataCallBack() interface{}      { return gofakeit.Email() }
 func DefaultUUIDPrepareDataCallBack() interface{}       { return gofakeit.UUID() }
