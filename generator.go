@@ -29,3 +29,4 @@ func DefaultEmailPrepareDataCallBack() interface{}      { return gofakeit.Email(
 func DefaultUUIDPrepareDataCallBack() interface{}       { return gofakeit.UUID() }
 func DefaultDATEStringPrepareDataCallBack() interface{} { return gofakeit.Date().String() }
 func DefaultLanguagePrepareDataCallBack() interface{}   { return gofakeit.Language() }
+func NilPrepareDataCallBack() interface{}               { return nil }
