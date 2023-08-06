@@ -10,6 +10,11 @@ import (
 const (
 	QUERYEND    = ");"
 	QUERYPERIOD = ", "
+
+	ScanQuery = `
+	SELECT column_name, data_type
+	FROM information_schema.columns
+	WHERE table_name = '%s';`
 )
 
 // PostreSQL represent a table in a database
@@ -22,11 +27,7 @@ type PostreSQL struct {
 // Scan from database, extract table information and mapping scanned data into `Columns` type
 func (psql *PostreSQL) Scan(ctx context.Context, db *sql.DB, tableName string) (Columns, error) {
 	clms := Columns{}
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(`
-		SELECT column_name, data_type
-		FROM information_schema.columns
-		WHERE table_name = '%s';`,
-		tableName))
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(ScanQuery, tableName))
 	if err != nil {
 		return nil, err
 	}
