@@ -2,7 +2,7 @@
 ![](./public/icon.png)
 
 # Overview
-mifer is a package which generate an 'INSERT' QUERY by the random data from a table info
+mifer is a library which generate an 'INSERT' QUERY by the random data from a table info
 
 # Usage
 
