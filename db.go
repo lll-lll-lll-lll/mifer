@@ -2,13 +2,34 @@ package mifer
 
 import (
 	"context"
+	"database/sql"
 )
 
 type MiferBuilder interface {
 	// from database, extract table information and mapping scanned data into `Columns` type
 	Scan(ctx context.Context, tableName string) (*Column, error)
 	// create insert query
-	BuildQueries(ctx context.Context, maxDatumNum int, columns Columns, options ...MiferOption) ([]string, error)
+	BuildQueries(ctx context.Context, columns Columns, tableName string, options ...MiferOption) ([]string, error)
+}
+
+func Inject(ctx context.Context, db *sql.DB, queries []string) error {
+	tx, err := db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	defer tx.Rollback()
+
+	for _, query := range queries {
+		if _, err := tx.ExecContext(ctx, query); err != nil {
+			return err
+		}
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+	return nil
 }
 
 type Column struct {
