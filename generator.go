@@ -12,14 +12,14 @@ type PrepareDataCallBack func() interface{}
 
 type DefaultMiferGenerator struct{}
 
-func (dmg DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn PrepareDataCallBack) ([]interface{}, error) {
+func (dmg DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn PrepareDataCallBack) []interface{} {
 	datum := make([]interface{}, 0, numData)
 	var i int64
 	for i = 0; i < numData; i++ {
 		randomData := fn()
 		datum = append(datum, randomData)
 	}
-	return datum, nil
+	return datum
 }
 
 func DefaultUserNamePrepareDataCallBack() interface{}   { return gofakeit.Username() }
