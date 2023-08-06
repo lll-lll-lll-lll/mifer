@@ -64,7 +64,10 @@ func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, o
 
 	for j := 0; j < columnNum; j++ {
 		columnDataNum := len(options[j].Datum)
-
+		_, ok := columns[options[j].ColumnKey]
+		if !ok {
+			return nil, NewErr(NoTypeErr, "no column key specified")
+		}
 		dataFormat := checkType(columns[options[j].ColumnKey].Type)
 
 		buildQueries(ctx, columnNum, columnDataNum, psql.TableName, columnNames, dataFormat, &options[j], j+1, queries)
