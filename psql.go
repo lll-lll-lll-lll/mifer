@@ -17,17 +17,22 @@ const (
 	WHERE table_name = '%s';`
 )
 
+func NewPSQLBuilder(db *sql.DB) *PostresBuilder {
+	return &PostresBuilder{db: db}
+}
+
 // PostresBuilder represent a table in a database
 type PostresBuilder struct {
 	DBName    string
 	TableName string
 	columns   *Columns
+	db        *sql.DB
 }
 
 // Scan from database, extract table information and mapping scanned data into `Columns` type
-func (psql *PostresBuilder) Scan(ctx context.Context, db *sql.DB, tableName string) (Columns, error) {
+func (psql *PostresBuilder) Scan(ctx context.Context, tableName string) (Columns, error) {
 	clms := Columns{}
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(ScanQuery, tableName))
+	rows, err := psql.db.QueryContext(ctx, fmt.Sprintf(ScanQuery, tableName))
 	if err != nil {
 		return nil, err
 	}

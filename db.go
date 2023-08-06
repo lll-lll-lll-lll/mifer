@@ -2,12 +2,11 @@ package mifer
 
 import (
 	"context"
-	"database/sql"
 )
 
 type MiferBuilder interface {
 	// from database, extract table information and mapping scanned data into `Columns` type
-	Scan(ctx context.Context, db *sql.DB, tableName string) (*Column, error)
+	Scan(ctx context.Context, tableName string) (*Column, error)
 	// create insert query
 	BuildQueries(ctx context.Context, maxDatumNum int, columns Columns, options ...MiferOption) ([]string, error)
 }
