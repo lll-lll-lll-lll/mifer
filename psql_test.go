@@ -12,15 +12,14 @@ import (
 func Test_Build(t *testing.T) {
 	t.Parallel()
 	psql := &mifer.PostresBuilder{
-		DBName:    "testDB",
-		TableName: "users",
+		DBName: "testDB",
 	}
 	t.Run("single query", func(t *testing.T) {
 		t.Parallel()
 		randomID := mifer.DefaultInt64PrepareDataCallBack()
 		randaomName := mifer.DefaultUserNamePrepareDataCallBack()
 		clmns := mifer.Columns{"id": mifer.Column{Type: "int"}, "name": mifer.Column{Type: "nvarchar"}}
-		queries, err := psql.BuildQueries(context.Background(), clmns,
+		queries, err := psql.BuildQueries(context.Background(), clmns, "users",
 			mifer.MiferOption{"id", []interface{}{randomID}},
 			mifer.MiferOption{"name", []interface{}{randaomName}})
 		if err != nil {
@@ -41,7 +40,7 @@ func Test_Build(t *testing.T) {
 		randaomName3 := mifer.DefaultUserNamePrepareDataCallBack()
 
 		clmns := mifer.Columns{"id": mifer.Column{Type: "int"}, "name": mifer.Column{Type: "nvarchar"}}
-		queries, err := psql.BuildQueries(context.Background(), clmns,
+		queries, err := psql.BuildQueries(context.Background(), clmns, "users",
 			mifer.MiferOption{"id", []interface{}{randomID, randomID2, randomID3}},
 			mifer.MiferOption{"name", []interface{}{randaomName, randaomName2, randaomName3}})
 		if err != nil {
@@ -63,7 +62,7 @@ func Test_Build(t *testing.T) {
 		t.Parallel()
 		randomID := mifer.DefaultInt64PrepareDataCallBack()
 		column := mifer.Columns{"id": mifer.Column{Type: "int"}}
-		queries, err := psql.BuildQueries(context.Background(), column,
+		queries, err := psql.BuildQueries(context.Background(), column, "users",
 			mifer.MiferOption{"id", []interface{}{randomID}})
 		if err != nil {
 			t.Log(err)
@@ -75,7 +74,7 @@ func Test_Build(t *testing.T) {
 	t.Run(" no options error", func(t *testing.T) {
 		t.Parallel()
 		column := mifer.Columns{"id": mifer.Column{Type: "int"}}
-		_, err := psql.BuildQueries(context.Background(), column)
+		_, err := psql.BuildQueries(context.Background(), column, "users")
 		e, ok := err.(*mifer.MiferError)
 		if !ok {
 			t.Errorf("expected *mifer.MiferError, got %T", err)

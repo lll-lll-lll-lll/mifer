@@ -23,10 +23,9 @@ func NewPSQLBuilder(db *sql.DB) *PostresBuilder {
 
 // PostresBuilder represent a table in a database
 type PostresBuilder struct {
-	DBName    string
-	TableName string
-	columns   *Columns
-	db        *sql.DB
+	DBName  string
+	columns *Columns
+	db      *sql.DB
 }
 
 // Scan from database, extract table information and mapping scanned data into `Columns` type
@@ -53,7 +52,7 @@ func (psql *PostresBuilder) Scan(ctx context.Context, tableName string) (Columns
 
 // BuildQueries create insert queries. from options information.
 // return error if options's num is zero.
-func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, options ...MiferOption) ([]string, error) {
+func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, tableName string, options ...MiferOption) ([]string, error) {
 	if len(options) == 0 {
 		return nil, NewErr(NoOptionsErr, "Not a option was provided. At least one option must be provided")
 	}
@@ -70,7 +69,7 @@ func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, o
 		}
 		dataFormat := checkType(columns[options[j].ColumnKey].Type)
 
-		buildQueries(ctx, columnNum, columnDataNum, psql.TableName, columnNames, dataFormat, &options[j], j+1, queries)
+		buildQueries(ctx, columnNum, columnDataNum, tableName, columnNames, dataFormat, &options[j], j+1, queries)
 	}
 
 	return queries, nil
