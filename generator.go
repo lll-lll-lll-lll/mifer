@@ -12,7 +12,7 @@ type PrepareDataCallBack func() interface{}
 
 type DefaultMiferGenerator struct{}
 
-func (dmg *DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn PrepareDataCallBack) ([]interface{}, error) {
+func (dmg DefaultMiferGenerator) Do(ctx context.Context, numData int64, fn PrepareDataCallBack) ([]interface{}, error) {
 	datum := make([]interface{}, 0, numData)
 	var i int64
 	for i = 0; i < numData; i++ {
