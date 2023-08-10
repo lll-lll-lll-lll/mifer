@@ -23,9 +23,10 @@ func NewPSQLBuilder(db *sql.DB) *PostresBuilder {
 
 // PostresBuilder represent a table in a database
 type PostresBuilder struct {
-	DBName  string
-	columns *Columns
-	db      *sql.DB
+	DBName    string
+	columns   *Columns
+	db        *sql.DB
+	IsDefault bool
 }
 
 // Scan from database, extract table information and mapping scanned data into `Columns` type
