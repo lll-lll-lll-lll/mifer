@@ -75,15 +75,6 @@ func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, t
 	return queries, nil
 }
 
-func joinClmnKeys(options []MiferOption) string {
-	tmp := make([]string, 0, len(options))
-	for _, opt := range options {
-		tmp = append(tmp, opt.ColumnKey)
-	}
-	clms := strings.Join(tmp, ", ")
-	return clms
-}
-
 func buildEachQuery(ctx context.Context, columnNum int, columnDataNum int, tableName string, columnNames string, dataFormat string, option *MiferOption, endIdx int, queries []string) []string {
 	for i := 0; i < columnDataNum; i++ {
 		q := fmt.Sprintf("INSERT INTO %s (%s) VALUES (", tableName, columnNames)
@@ -101,6 +92,15 @@ func buildEachQuery(ctx context.Context, columnNum int, columnDataNum int, table
 		queries[i] = q
 	}
 	return queries
+}
+
+func joinClmnKeys(options []MiferOption) string {
+	tmp := make([]string, 0, len(options))
+	for _, opt := range options {
+		tmp = append(tmp, opt.ColumnKey)
+	}
+	clms := strings.Join(tmp, ", ")
+	return clms
 }
 
 // checkType switch data format by column type for query's placeholder.
