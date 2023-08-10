@@ -84,20 +84,6 @@ func joinClmnKeys(options []MiferOption) string {
 	return clms
 }
 
-func MaxOptDatum(opts ...MiferOption) int {
-	v := -1
-
-	for _, opt := range opts {
-		num := len(opt.Datum)
-		if v <= num {
-			v = num
-			continue
-		}
-	}
-
-	return v
-}
-
 func buildQueries(ctx context.Context, columnNum int, columnDataNum int, tableName string, columnNames string, dataFormat string, option *MiferOption, endIdx int, queries []string) []string {
 	for i := 0; i < columnDataNum; i++ {
 		q := fmt.Sprintf("INSERT INTO %s (%s) VALUES (", tableName, columnNames)

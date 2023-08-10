@@ -5,6 +5,17 @@ import (
 	"database/sql"
 )
 
+type Column struct {
+	// ex: int, nvarchar, text, date...
+	Type string
+	// ex: pimary key, foreign key, not null, unique,
+	// references table(column name), check(condition), default value.
+	Constraint string
+}
+
+// key is the name of the column
+type Columns = map[string]Column
+
 type MiferBuilder interface {
 	// from database, extract table information and mapping scanned data into `Columns` type
 	Scan(ctx context.Context, tableName string) (*Column, error)
@@ -32,13 +43,16 @@ func Inject(ctx context.Context, db *sql.DB, queries []string) error {
 	return nil
 }
 
-type Column struct {
-	// ex: int, nvarchar, text, date...
-	Type string
-	// ex: pimary key, foreign key, not null, unique,
-	// references table(column name), check(condition), default value.
-	Constraint string
-}
+func MaxOptDatum(opts ...MiferOption) int {
+	v := -1
 
-// key is the name of the column
-type Columns = map[string]Column
+	for _, opt := range opts {
+		num := len(opt.Datum)
+		if v <= num {
+			v = num
+			continue
+		}
+	}
+
+	return v
+}
