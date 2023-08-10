@@ -61,18 +61,25 @@ func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, t
 	columnNames := joinClmnKeys(options)
 	columnNum := len(options)
 
+	if err := buildQueries(ctx, queries, columns, options, columnNum, tableName, columnNames); err != nil {
+		return nil, err
+	}
+
+	return queries, nil
+}
+
+func buildQueries(ctx context.Context, queries []string, columns Columns, options []MiferOption, columnNum int, tableName string, columnNames string) error {
 	for j := 0; j < columnNum; j++ {
 		columnDataNum := len(options[j].Datum)
 		_, ok := columns[options[j].ColumnKey]
 		if !ok {
-			return nil, NewErr(NoTypeErr, "no column key specified")
+			return NewErr(NoTypeErr, "no column key specified")
 		}
 		dataFormat := checkType(columns[options[j].ColumnKey].Type)
 
 		buildEachQuery(ctx, columnNum, columnDataNum, tableName, columnNames, dataFormat, &options[j], j+1, queries)
 	}
-
-	return queries, nil
+	return nil
 }
 
 func buildEachQuery(ctx context.Context, columnNum int, columnDataNum int, tableName string, columnNames string, dataFormat string, option *MiferOption, endIdx int, queries []string) []string {
