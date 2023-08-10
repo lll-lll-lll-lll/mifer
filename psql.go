@@ -69,7 +69,7 @@ func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, t
 		}
 		dataFormat := checkType(columns[options[j].ColumnKey].Type)
 
-		buildQueries(ctx, columnNum, columnDataNum, tableName, columnNames, dataFormat, &options[j], j+1, queries)
+		buildEachQuery(ctx, columnNum, columnDataNum, tableName, columnNames, dataFormat, &options[j], j+1, queries)
 	}
 
 	return queries, nil
@@ -84,7 +84,7 @@ func joinClmnKeys(options []MiferOption) string {
 	return clms
 }
 
-func buildQueries(ctx context.Context, columnNum int, columnDataNum int, tableName string, columnNames string, dataFormat string, option *MiferOption, endIdx int, queries []string) []string {
+func buildEachQuery(ctx context.Context, columnNum int, columnDataNum int, tableName string, columnNames string, dataFormat string, option *MiferOption, endIdx int, queries []string) []string {
 	for i := 0; i < columnDataNum; i++ {
 		q := fmt.Sprintf("INSERT INTO %s (%s) VALUES (", tableName, columnNames)
 		if queries[i] != "" {
