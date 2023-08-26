@@ -41,7 +41,7 @@ func (psql *PostresBuilder) Scan(ctx context.Context, tableName string) (Columns
 	for rows.Next() {
 		var columnName string
 		var column Column
-		if err := rows.Scan(columnName, &column.Type); err != nil {
+		if err := rows.Scan(&columnName, &column.Type); err != nil {
 			return nil, err
 		}
 		clms[columnName] = column
