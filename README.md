@@ -1,8 +1,9 @@
-
 ![](./public/icon.png)
 
 # Overview
-mifer is a library which generate an 'INSERT' QUERY by the random data from a table info
+
+mifer is a library which generate an 'INSERT' QUERY by the random data from a
+table info
 
 # Usage
 
@@ -26,9 +27,8 @@ func main(){
 	if err != nil {
 		log.Fatal(err)
 	}
-	idOpt := mifer.MiferOption{ColumnKey: "id", Datum: mifer.DefaultMiferGenerator{}.Do(100, mifer.DefaultUUIDPrepareDataCallBack)}
 	nameOpt := mifer.MiferOption{ColumnKey: "name", Datum: mifer.DefaultMiferGenerator{}.Do(100, mifer.DefaultStringPrepareDataCallBack)}
-	queries, err := builder.BuildQueries(ctx, clmns, tableName, idOpt, nameOpt)
+	queries, err := builder.BuildQueries(ctx, clmns, tableName, nameOpt)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,5 +36,4 @@ func main(){
 		log.Fatal(err)
 	}
 }
-
 ```
