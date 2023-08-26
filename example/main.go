@@ -6,6 +6,7 @@ import (
 	"log"
 	"time"
 
+	_ "github.com/lib/pq"
 	"github.com/lll-lll-lll-lll/mifer"
 )
 
@@ -24,9 +25,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	idOpt := mifer.MiferOption{ColumnKey: "id", Datum: mifer.DefaultMiferGenerator{}.Do(100, mifer.DefaultUUIDPrepareDataCallBack)}
 	nameOpt := mifer.MiferOption{ColumnKey: "name", Datum: mifer.DefaultMiferGenerator{}.Do(100, mifer.DefaultStringPrepareDataCallBack)}
-	queries, err := builder.BuildQueries(ctx, clmns, tableName, idOpt, nameOpt)
+	queries, err := builder.BuildQueries(ctx, clmns, tableName, nameOpt)
 	if err != nil {
 		log.Fatal(err)
 	}
