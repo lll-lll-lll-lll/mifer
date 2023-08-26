@@ -9,5 +9,6 @@ require (
 
 require (
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/lib/pq v1.10.9
 	github.com/pkg/errors v0.9.1 // indirect
 )
