@@ -3,6 +3,9 @@ package mifer
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"os"
+	"path/filepath"
 )
 
 type Column struct {
@@ -39,6 +42,20 @@ func Inject(ctx context.Context, db *sql.DB, queries []string) error {
 
 	if err := tx.Commit(); err != nil {
 		return err
+	}
+	return nil
+}
+
+func Output(queries []string, dirPath, fileName string) error {
+	if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+		return fmt.Errorf("%v is not a directory path", dirPath)
+	}
+	f, err := os.Create(filepath.Join(dirPath, fileName))
+	if err != nil {
+		return err
+	}
+	for _, query := range queries {
+		f.WriteString(query + "\n")
 	}
 	return nil
 }
