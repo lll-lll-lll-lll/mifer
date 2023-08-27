@@ -19,9 +19,7 @@ func main(){
 		log.Fatal(err)
 	}
 	tableName := "users"
-	c := context.Background()
-	ctx, cancel := context.WithTimeout(c, time.Second*5)
-	defer cancel()
+	ctx := context.Background()
 	builder := mifer.NewPSQLBuilder(db)
 	clmns, err := builder.Scan(ctx, tableName)
 	if err != nil {
