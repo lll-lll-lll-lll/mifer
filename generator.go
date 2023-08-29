@@ -1,6 +1,8 @@
 package mifer
 
 import (
+	"strings"
+
 	"github.com/brianvoe/gofakeit/v6"
 )
 
@@ -20,8 +22,15 @@ func (dmg DefaultMiferGenerator) Do(numData int64, fn PrepareDataCallBack) []int
 	return datum
 }
 
-func DefaultUserNamePrepareDataCallBack() interface{}   { return gofakeit.Username() }
-func DefaultStringPrepareDataCallBack() interface{}     { return gofakeit.Letter() }
+func DefaultUserNamePrepareDataCallBack() interface{} { return gofakeit.Username() }
+func DefaultStringPrepareDataCallBack() interface{} {
+	s := make([]string, 10)
+	size := len(s)
+	for i := 0; i <= size; i++ {
+		s = append(s, gofakeit.Letter())
+	}
+	return strings.Join(s, "")
+}
 func DefaultInt64PrepareDataCallBack() interface{}      { return gofakeit.Int64() }
 func DefaultEmailPrepareDataCallBack() interface{}      { return gofakeit.Email() }
 func DefaultUUIDPrepareDataCallBack() interface{}       { return gofakeit.UUID() }
