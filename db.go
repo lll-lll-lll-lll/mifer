@@ -60,7 +60,7 @@ func Output(queries []string, dirPath, fileName string) error {
 	return nil
 }
 
-func MaxOptDatum(opts ...MiferOption) int {
+func maxOptDatum(opts ...MiferOption) int {
 	v := -1
 
 	for _, opt := range opts {

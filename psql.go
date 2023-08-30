@@ -58,7 +58,7 @@ func (psql *PostresBuilder) BuildQueries(ctx context.Context, columns Columns, t
 	if len(options) == 0 {
 		return nil, NewErr(NoOptionsErr, "Not a option was provided. At least one option must be provided")
 	}
-	queryNum := MaxOptDatum(options...)
+	queryNum := maxOptDatum(options...)
 	queries := make([]string, queryNum)
 	columnNames := joinClmnKeys(options)
 	columnNum := len(options)
