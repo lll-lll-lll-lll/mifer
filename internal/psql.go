@@ -16,7 +16,7 @@ func injectToOption(ctx context.Context, option *mifer.MiferOption, numData int6
 }
 
 func inferColumnType(ctx context.Context, db *sql.DB, tableName string, columnName string) (mifer.PrepareDataCallBack, error) {
-	rows, err := db.QueryContext(ctx, fmt.Sprintf(mifer.ScanQuery, tableName))
+	rows, err := db.QueryContext(ctx, fmt.Sprintf(mifer.SCAN_QUERY, tableName))
 	if err != nil {
 		return nil, err
 	}

@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	QUERYEND    = ");"
-	QUERYPERIOD = ", "
+	QUERY_END    = ");"
+	QUERY_PERIOD = ", "
 
-	ScanQuery = `
+	SCAN_QUERY = `
 	SELECT column_name, data_type
 	FROM information_schema.columns
 	WHERE table_name = '%s';`
@@ -33,7 +33,7 @@ type PostresBuilder struct {
 // Scan from database, extract table information and mapping scanned data into `Columns` type
 func (psql *PostresBuilder) Scan(ctx context.Context, tableName string) (Columns, error) {
 	clms := Columns{}
-	rows, err := psql.db.QueryContext(ctx, fmt.Sprintf(ScanQuery, tableName))
+	rows, err := psql.db.QueryContext(ctx, fmt.Sprintf(SCAN_QUERY, tableName))
 	if err != nil {
 		return nil, err
 	}
@@ -92,12 +92,12 @@ func buildEachQuery(ctx context.Context, columnNum int, columnDataNum int, table
 		}
 
 		if columnNum == endIdx {
-			q += fmt.Sprintf(dataFormat+QUERYEND, option.Datum[i])
+			q += fmt.Sprintf(dataFormat+QUERY_END, option.Datum[i])
 			queries[i] = q
 			continue
 		}
 
-		q += fmt.Sprintf(dataFormat+QUERYPERIOD, option.Datum[i])
+		q += fmt.Sprintf(dataFormat+QUERY_PERIOD, option.Datum[i])
 		queries[i] = q
 	}
 	return queries
